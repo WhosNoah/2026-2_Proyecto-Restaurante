@@ -50,6 +50,7 @@ xcode-select --install       # Esto instala tanto el compilador gcc y make.
 Para instalar el proyecto, unicamente sera necesaria la herramienta git, es tan sencillo como instalar un ejecutable en [Windows](https://git-scm.com/) o una linea de comandos en [Linux](#instalacion-de-requisitos), si instalaste xcode-select en Apple, git ya viene instalado.
 
 #### Instalacion:
+
 ``` bash
 git clone https://github.com/WhosNoah/2026-2_Proyecto-Restaurante
 ```
@@ -61,5 +62,9 @@ Para este paso es necesario el comando `make`, en windows normalmente viene como
 
 #### Como compilar:
 ``` bash
-
+make all    # Compila cada archivo .c
+make build  # Solo compila, sin enlazar
+make link   # Enlaza los .o y genera el ejecutable
+make run    # Runea el programa.
+make clean  # Limpia todo.
 ```

@@ -1,41 +1,83 @@
-# Primero definimos las variables para el compilador.
+# ============================================================
+# Makefile multiplataforma (Linux / macOS / Windows)
+# Estructura esperada:
+#   src/*.c                 -> main.c
+#   src/restaurante/*.c     -> modulos del proyecto
+#   src/include/*.h         -> cabeceras
+#   lib/ y lib/restaurante/ -> .o y .d (se crean solos)
+#   bin/                    -> ejecutable (se crea solo)
+# ============================================================
 
-CC	   := gcc
-TARGET := restaurante
+# ---------- Deteccion de sistema ----------
+EXE :=
+WIN_CMD :=
 
-BUILD = build
-BIN = bin
-
-TARGET = $(BIN)/restaurante.exe
-
-# Fuentes y Objetos
-INC_DIR = src/include
-SOURCES = $(SOURCES_1) $(SOURCES_2)
-
-# Definimos las banderas a usar para el compilador
-CFLAGS  := -std=c99 -Wall -Wextra -Wpedantic -I$(INC_DIR) -I$(SOURCES_2)
-LDFLAGS :=
-LDLIBS  :=
-
-# Este detectara automaticamente todos los .c (no hay que editar nada al agregar nuevos archivos)
-SOURCES_1 := $(wildcard src/*.c)
-SOURCES_2 := $(wildcard src/restaurante/*.c)
-OBJS      := $(SRCS:$(SOURCES_2)/%.c=$(BUILD)/%.o)
-DEPS	  := $(OBJS:.o=.d)
-
-.PHONY: all debug release run clean help
-
-# Modo para compilar.
-all: CFLAGS += -g -O0
-all: $(TARGET)
-
-# Enlazamos los .c y los .o
-$(TARGET): $(OBJS)
-	$(CC) $(OBJS) -o $@ $(LDFLAGS) $(LDLIBS)
-
-# Identificamos si se usa un sistema Windows o UNIX based
 ifeq ($(OS),Windows_NT)
-	MKDIR = if not exist "$(BUILD)" mkdir "$(BUILD)"
-else
-	MKDIR = mkdir -p "$(BUILD)"
+    EXE := .exe
+    # Si make usa cmd.exe (sin sh), se usan comandos de cmd.
+    # Si usa sh/bash (MSYS2, Git Bash, Cygwin), se usan comandos Unix.
+    ifeq ($(findstring sh,$(notdir $(SHELL))),)
+        WIN_CMD := 1
+    endif
 endif
+
+ifdef WIN_CMD
+    # mkdir -p equivalente en cmd (crea carpetas intermedias si no existen)
+    mkdir_p = @if not exist "$(subst /,\,$(1))" mkdir "$(subst /,\,$(1))"
+    RM_ALL  = if exist lib rmdir /S /Q lib & if exist bin rmdir /S /Q bin
+    RUN_CMD = $(subst /,\,$(TARGET))
+else
+    mkdir_p = @mkdir -p "$(1)"
+    RM_ALL  = rm -rf lib bin
+    RUN_CMD = ./$(TARGET)
+endif
+
+# ---------- Variables ----------
+CC       ?= gcc
+CFLAGS   = -Wall -Werror -std=c99 -O2 -MMD -MP
+# Con -I src/include las cabeceras funcionan con <> y con ""
+INCLUDES = -I src/include -I src
+
+SRC_DIR  = src
+OBJ_DIR  = lib
+BIN_DIR  = bin
+NAME     = restaurante
+TARGET   = $(BIN_DIR)/$(NAME)$(EXE)
+
+# ---------- Fuentes y objetos ----------
+SOURCES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/restaurante/*.c)
+
+# src/x.c -> lib/x.o  |  src/restaurante/y.c -> lib/restaurante/y.o
+OBJECTS = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SOURCES))
+DEPS    = $(OBJECTS:.o=.d)
+
+# ---------- Targets ----------
+.PHONY: all build link run clean
+
+all: link
+
+# Compila cada .c a su .o (crea lib/ y lib/restaurante/ si hace falta)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+	$(call mkdir_p,$(@D))
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+# Solo compilar, sin enlazar
+build: $(OBJECTS)
+	@echo Compilado Exitosamente
+
+# Enlaza los .o y genera el ejecutable en bin/ (se crea si no existe)
+link: $(TARGET)
+
+$(TARGET): $(OBJECTS)
+	$(call mkdir_p,$(BIN_DIR))
+	$(CC) $(OBJECTS) -o $@
+	@echo Enlazado Exitosamente
+
+run: $(TARGET)
+	$(RUN_CMD)
+
+clean:
+	$(RM_ALL)
+
+# Dependencias de cabeceras generadas por -MMD
+-include $(DEPS)
