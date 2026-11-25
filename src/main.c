@@ -1,10 +1,10 @@
 #include <ui.h>
-#include <data.h>
-#include <menu.h>
 #include <mesa.h>
+#include <menu.h>
+#include <catalogo.h>
 
 int main(void) {
-    Platillo menu;
+    Platillo menu[MAX_PLATILLOS];
     int total_platillos = 0;
 
     Mesa mesas[MAX_MESAS];
@@ -13,10 +13,10 @@ int main(void) {
     VentaMesero ventas_meseros[MAX_MESEROS];
     int total_meseros = 0;
 
-    inicializar_ventas_meseros(ventas_meseros, &total_meseros);
-    cargar_datos(menu, &total_platillos, mesas, &total_mesas);
+    inicializar_ventas_meseross(ventas_meseros, &total_meseros);
+    cargar_datos(menu, &total_platillos, mesas, &total_meseros);
 
-    ejecutar_sistema(menu, total_platillos, mesas, total_mesas, ventas_meseros, &total_meseros);
+    user_interface(menu, total_platillos, mesas, total_mesas, ventas_meseros, &total_meseros);
 
     return 0;
 }

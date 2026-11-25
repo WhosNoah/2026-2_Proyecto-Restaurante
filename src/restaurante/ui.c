@@ -1,23 +1,22 @@
 #include <ui.h>
 
-void ejecutar_sistema(Platillo menu[], int total_platillos, Mesa mesas[], int total_mesas, VentaMesero ventas_meseros[], int *total_meseros) {
-    int opcion = 0;
-    do {
-        printf("\n*--------------------------------------------------------*\n");
-        printf("|                 Sistema de Restaurante                 |\n");
-        printf("*--------------------------------------------------------*\n");
-        printf("| [1] Ver menu.                                          |\n");
-        printf("| [2] Ver mapa de mesas.                                 |\n");
-        printf("| [3] Abrir mesa.                                        |\n");
-        printf("| [4] Agregar platillo a comanda.                        |\n");
-        printf("| [5] Quitar / reducir platillo de comanda.              |\n");
-        printf("| [6] Ver cuenta desglosada.                             |\n");
-        printf("| [7] Cerrar mesa y registrar venta.                     |\n");
-        printf("| [8] Ver reporte de ventas acumulado.                   |\n");
-        printf("| [9] Terminar programa.                                 |\n");
-        printf("*--------------------------------------------------------*\n");
-        opcion = leer_entero(" -> ");
-        
+void user_interface(Platillo menu[], int total_platillos, Mesa mesas[], int total_mesas, VentaMesero ventas_meseros[], int *total_meseros) {
+    int opcion = -1;
+    while ( opcion != 0 ) {
+        printf("\n================ SELECCIONE UNA OPCION ================\n");
+        printf("  1. Ver menu\n");
+        printf("  2. Ver mapa de mesas\n");
+        printf("  3. Abrir mesa\n");
+        printf("  4. Agregar platillo a comanda\n");
+        printf("  5. Quitar / reducir platillo de comanda\n");
+        printf("  6. Ver cuenta desglosada\n");
+        printf("  7. Cerrar mesa y registrar venta\n");
+        printf("  8. Ver reporte acumulado de ventas\n");
+        printf("  0. Salir\n");
+        printf("=========================================================\n");
+
+        opcion = leer_entero("-> ");
+
         switch ( opcion ) {
             case 1:
                 mostrar_menu(menu, total_platillos);
@@ -41,14 +40,13 @@ void ejecutar_sistema(Platillo menu[], int total_platillos, Mesa mesas[], int to
                 flujo_cerrar_mesa(mesas, total_mesas, menu, total_platillos, ventas_meseros, total_meseros);
                 break;
             case 8:
-                mostrar_reporte_de_mesas(ventas_meseros, *total_meseros, menu, total_platillos);
+                mostrar_reporte_ventas(ventas_meseros, *total_meseros, menu, total_platillos);
                 break;
-            case 9:
-                printf("Saliendo del sistema...\n");
+            case 0:
+                printf("Terminando programa...\n");
                 break;
             default:
                 printf("Seleccione una opcion valida.\n");
-                break;
         }
-    } while ( opcion != 9 );
+    }
 }

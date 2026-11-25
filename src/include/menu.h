@@ -17,13 +17,13 @@ typedef enum {
 typedef struct {
     int id;
     char nombre[MAX_NOMBRE_PLATILLO];
-    CategoriaPlatillo categoria;
-    double precio;                      // Ya con el iva incluido.
-    int unidades_vendidas;              // Se acumula al cerrar la mesa.
+    CategoriaPlatillo platillo;
+    double precio;                          // Precio con IVA (16%) incluido.
+    int unidades_vendidas;                  // Acumulado al cerrar la mesa.
 } Platillo;
 
 void inicializar_menu(Platillo menu[], int *total_platillos);
-int registrar_platillo(Platillo menu[], int *total_platillos, int id, const char *nombre, CategoriaPlatillo categoria, double precio);
+int registrar_platillo_menu(Platillo menu[], int *total_platillos, int id, const char *nombre, CategoriaPlatillo categoria, double precio);
 int buscar_platillo_id(const Platillo menu[], int total_platillos, int id);
 const char *obtener_nombre_categoria(CategoriaPlatillo categoria);
 void mostrar_menu(const Platillo menu[], int total_platillos);

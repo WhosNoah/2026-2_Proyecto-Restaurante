@@ -1,9 +1,8 @@
 #include <cuenta.h>
 
 void desglosar_iva(double total_con_iva, double *subtotal, double *iva) {
-    if ( total_con_iva < 0.0 )
+    if ( total_con_iva < 0.0 ) 
         total_con_iva = 0.0;
-    
     double sub = total_con_iva / 1.16;
     double imp = total_con_iva - sub;
 
@@ -27,8 +26,8 @@ int dividir_cuenta(double total_a_pagar, int num_personas, double *monto_primera
     long long base_centavos = total_centavos / num_personas;
     long long resto_centavos = total_centavos % num_personas;
 
-    long primera_centavos = base_centavos + resto_centavos;
-
+    long long primera_centavos = base_centavos + resto_centavos;
+    
     if ( monto_primera_persona != NULL )
         *monto_primera_persona = (double)primera_centavos / 100.0;
     if ( monto_resto_personas != NULL )
@@ -44,7 +43,7 @@ int calcular_cuenta_mesa(const Mesa *mesa, double porcentaje_propina, int num_pe
     cuenta->total_con_iva = total_comanda(&mesa->comanda);
     desglosar_iva(cuenta->total_con_iva, &cuenta->subtotal, &cuenta->iva);
 
-    cuenta->porcentaje_propina = (porcentaje_propina >= 0.0) ? porcentaje_propina : 0.0;
+    cuenta->porcentaje_propina = (porcentaje_propina >= 0.0 ) ? porcentaje_propina : 0.0;
     cuenta->propina = calcular_propina(cuenta->total_con_iva, cuenta->porcentaje_propina);
     cuenta->total_a_pagar = cuenta->total_con_iva + cuenta->propina;
 
@@ -67,15 +66,14 @@ void imprimir_cuenta(const Mesa *mesa, const DesgloseCuenta *cuenta) {
     }
 
     printf("--------------------------------------------\n");
-    printf("Subtotal .......................... %8.2f\n", cuenta->subtotal);
-    printf("IVA (16%%) ...................... %8.2f\n", cuenta->iva);
-    printf("Total ............................ %8.2f\n", cuenta->total_con_iva);
-    printf("Propina ( %.0f%% ) ............ %8.2f\n",
-            cuenta->porcentaje_propina, cuenta->propina);
-    printf("Total a pagar ...................%8.2f\n", cuenta->total_a_pagar);
+    printf("Subtotal ....................... $%8.2f\n", cuenta->subtotal);
+    printf("IVA (16%%) ...................... $%8.2f\n", cuenta->iva);
+    printf("Total .......................... $%8.2f\n", cuenta->total_con_iva);
+    printf("Propina (%.0f%%) .................. $%8.2f\n", cuenta->porcentaje_propina, cuenta->propina);
+    printf("TOTAL A PAGAR .................. $%8.2f\n", cuenta->total_a_pagar);
 
     if ( cuenta->num_personas == 1 )
-        printf("Dividido entre una persona: %.2f\n", cuenta->monto_primera_persona);
+        printf("Dividido entre 1: $%.2f\n", cuenta->monto_primera_persona);
     else if ( cuenta->num_personas > 1 )
-        printf("Dividido entre %d personas: %.2f + %d x %.2f\n", cuenta->num_personas, cuenta->monto_primera_persona, cuenta->num_personas - 1, cuenta->monto_resto_personas);
+        printf("Dividido entre %d: $%.2f + %d x $%.2f\n", cuenta->num_personas, cuenta->monto_primera_persona, cuenta->num_personas - 1, cuenta->monto_resto_personas);
 }
