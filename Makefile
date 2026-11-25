@@ -34,9 +34,11 @@ endif
 
 # ---------- Variables ----------
 CC       ?= gcc
-CFLAGS   = -Wall -Werror -std=c99 -O2 -MMD -MP
+CFLAGS   = -Wall -Werror -std=gnu99 -O2 -MMD -MP
 # Con -I src/include las cabeceras funcionan con <> y con ""
 INCLUDES = -I src/include -I src
+LDFLAGS  =
+LDLIBS   = -lm
 
 SRC_DIR  = src
 OBJ_DIR  = lib
@@ -70,7 +72,7 @@ link: $(TARGET)
 
 $(TARGET): $(OBJECTS)
 	$(call mkdir_p,$(BIN_DIR))
-	$(CC) $(OBJECTS) -o $@
+	$(CC) $(LDFLAGS) $(OBJECTS) -o $@ $(LDLIBS)
 	@echo Enlazado Exitosamente
 
 run: $(TARGET)
