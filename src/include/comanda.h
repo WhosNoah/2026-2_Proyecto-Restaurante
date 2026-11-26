@@ -2,29 +2,31 @@
 #define COMANDA_H
 
 #include <menu.h>
+#include <stdio.h>
+#include <string.h>
 
 #define MAX_RENGLONES 40
 #define MAX_NOTA 80
 
 typedef struct {
-    int id_platillo;
-    char nombre_platillo[MAX_NOMBRE_PLATILLO];
-    double precio_unitario;
+    int idPlatillo;
+    char nombrePlatillo[MAX_NOMBRE_PLATILLO];
+    double precioUnitario;
     int cantidad;
     char nota[MAX_NOTA];
 } RenglonComanda;
 
 typedef struct {
     RenglonComanda items[MAX_RENGLONES];
-    int total_renglones;
+    int totalRenglones;
 } Comanda;
 
-void inicializar_comanda(Comanda *comanda);
-int buscar_renglon_por_id(const Comanda *comanda, int id_platillo);
-void eliminar_renglon_indice(Comanda *comanda, int indice);
-int agregar_platillo(Comanda *comanda, const Platillo menu[], int total_platillos, int id_platillo, int cantidad, const char *nota);
-int quitar_platillo(Comanda *comanda, int id_platillo, int cantidad_a_quitar);
-double total_comanda(const Comanda *comanda);
-void mostrar_comanda(const Comanda *comanda);
+int buscarRenglonPorId(const Comanda *comanda, int idPlatillo);
+void eliminarRenglonEnIndice(Comanda *comanda, int indice);
+void inicializarComanda(Comanda *comanda);
+int agregarPlatillo(Comanda *comanda, const Platillo menu[], int totalPlatillos, int idPlatillo, int cantidad, const char *nota);
+int quitarPlatillo(Comanda *comanda, int idPlatillo, int cantidadAQuitar);
+double totalComanda(const Comanda *comanda);
+void mostrarComanda(const Comanda *comanda);
 
 #endif

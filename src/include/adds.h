@@ -1,10 +1,11 @@
 #ifndef ADDS_H
 #define ADDS_H
 
-#include <limpiar_buffer.h>
+#include <stdio.h>
+#include <string.h>
 
-void quitar_enter(char *cad);
-void leer_cadena(const char *prompt, char *destino, int tam_max);
+void quitarSaltoLinea(char *cadena);
+void leerCadena(const char *prompt, char *destino, int tamMax);
 int leer_entero(const char *prompt);
 double leer_double(const char *prompt);
 

@@ -1,6 +1,9 @@
 #ifndef MENU_H
 #define MENU_H
 
+#include <stdio.h>
+#include <string.h>
+
 #define MAX_PLATILLOS 30
 #define MAX_NOMBRE_PLATILLO 50
 
@@ -16,13 +19,13 @@ typedef struct {
     char nombre[MAX_NOMBRE_PLATILLO];
     CategoriaPlatillo categoria;
     double precio;
-    int unidades_vendidas;
+    int unidadesVendidas;
 } Platillo;
 
-void inicializar_menu(Platillo menu[], int *total_platillos);
-int registrar_platillo_menu(Platillo menu[], int *total_platillos, int id, const char *nombre, CategoriaPlatillo categoria, double precio);
-int buscar_platillo_id(const Platillo menu[], int total_platillos, int id);
-const char* obtener_nombre_categoria(CategoriaPlatillo categoria);
-void mostrar_menu(const Platillo menu[], int total_platillos);
+void inicializarMenu(Platillo menu[], int *totalPlatillos);
+int registrarPlatilloMenu(Platillo menu[], int *totalPlatillos, int id, const char *nombre, CategoriaPlatillo categoria, double precio);
+int buscarPlatilloPorId(const Platillo menu[], int totalPlatillos, int id);
+const char* obtenerNombreCategoria(CategoriaPlatillo categoria);
+void mostrarMenu(const Platillo menu[], int totalPlatillos);
 
 #endif

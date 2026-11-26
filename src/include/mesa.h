@@ -2,6 +2,8 @@
 #define MESA_H
 
 #include <menu.h>
+#include <stdio.h>
+#include <string.h>
 #include <comanda.h>
 
 #define MAX_MESAS 20
@@ -24,19 +26,19 @@ typedef struct {
 
 typedef struct {
     char nombre[MAX_NOMBRE_MESERO];
-    double total_vendido;
-    int mesas_atendidas;
+    double totalVendido;
+    int mesasAtendidas;
 } VentaMesero;
 
-void inicializar_mesas(Mesa mesas[], int *total_mesas);
-int registrar_mesa(Mesa mesas[], int *total_mesas, int numero, int capacidad);
-int buscar_mesa_por_numero(const Mesa mesas[], int total_mesas, int numero);
-void inicializar_ventas_meseros(VentaMesero ventas_meseros[], int *total_meseros);
-int asegurar_mesero(VentaMesero ventas_meseros[], int *total_meseros, const char *nombre);
 
-int abrir_mesa(Mesa mesas[], int total_mesas, int numero_mesa, const char *nombre_mesero, int comensales);
-int cerrar_mesa(Mesa mesas[], int total_mesas, VentaMesero ventas_meseros[], int *total_meseros, double *total_cobrado);
-void mostrar_mapa_mesas(const Mesa mesas[], int total_mesas);
-void mostrar_reporte_ventas(const VentaMesero mostrar_reporte_ventas[], int total_meseros, const Platillo menu[], int total_platillos);
+void inicializarMesas(Mesa mesas[], int *totalMesas);
+int registrarMesa(Mesa mesas[], int *totalMesas, int numero, int capacidad);
+int buscarMesaPorNumero(const Mesa mesas[], int totalMesas, int numero);
+void inicializarVentasMeseros(VentaMesero ventasMeseros[], int *totalMeseros);
+int asegurarMesero(VentaMesero ventasMeseros[], int *totalMeseros, const char *nombreMesero);
+int abrirMesa(Mesa mesas[], int totalMesas, int numeroMesa, const char *nombreMesero, int comensales);
+int cerrarMesa(Mesa mesas[], int totalMesas, int numeroMesa, Platillo menu[], int totalPlatillos, VentaMesero ventasMeseros[], int *totalMeseros, double *totalCobrado);
+void mostrarMapaMesas(const Mesa mesas[], int totalMesas);
+void mostrarReporteVentas(const VentaMesero ventasMeseros[], int totalMeseros, const Platillo menu[], int totalPlatillos);
 
 #endif
