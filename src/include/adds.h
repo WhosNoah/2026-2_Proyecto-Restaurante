@@ -6,7 +6,8 @@
 
 void quitarSaltoLinea(char *cadena);
 void leerCadena(const char *prompt, char *destino, int tamMax);
-int leer_entero(const char *prompt);
-double leer_double(const char *prompt);
+int leerEntero(const char *prompt);
+double leerDouble(const char *prompt);
+void copiarCadena(char *destino, const char *origen, int tamMax);
 
 #endif

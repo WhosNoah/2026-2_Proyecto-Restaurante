@@ -13,7 +13,7 @@ void inicializarMenu(Platillo menu[], int *totalPlatillos) {
 
 int registrarPlatilloMenu(Platillo menu[], int *totalPlatillos, int id, const char *nombre, CategoriaPlatillo categoria, double precio) {
     if (*totalPlatillos >= MAX_PLATILLOS || precio < 0.0) {
-        printf("\nError: [ Menu lleno / Precio invalido. ]\n")
+        printf("\nError: [ Menu lleno / Precio invalido. ]\n");
         return 0;
     }
     if (buscarPlatilloPorId(menu, *totalPlatillos, id) != -1) {

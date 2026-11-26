@@ -1,6 +1,7 @@
 #ifndef COMANDA_H
 #define COMANDA_H
 
+#include <adds.h>
 #include <menu.h>
 #include <stdio.h>
 #include <string.h>

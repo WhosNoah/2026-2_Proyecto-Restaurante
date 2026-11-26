@@ -8,13 +8,13 @@ double pedirPorcentajePropina(void) {
     printf("  4. Personalizada\n");
     printf("  5. Sin propina (0%%)\n");
 
-    int op = leer_entero("Opcion: ");
+    int op = leerEntero("Opcion: ");
     switch (op) {
         case 1: return 10.0;
         case 2: return 15.0;
         case 3: return 20.0;
         case 4: {
-            double p = leer_double("Ingresa porcentaje de propina (ej. 12.5): ");
+            double p = leerDouble("Ingresa porcentaje de propina (ej. 12.5): ");
             return (p >= 0.0) ? p : 0.0;
         }
         default: return 0.0;

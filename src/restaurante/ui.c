@@ -16,7 +16,7 @@ void ejecutarSistemaRestaurante(Platillo menu[], int totalPlatillos, Mesa mesas[
         printf("  0. Salir\n");
         printf("========================================================\n");
 
-        opcion = leer_entero("Selecciona una opcion: ");
+        opcion = leerEntero("Selecciona una opcion: ");
 
         switch (opcion) {
             case 1:

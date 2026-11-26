@@ -41,7 +41,7 @@ int agregarPlatillo(Comanda *comanda, const Platillo menu[], int totalPlatillos,
 
     int idxMenu = buscarPlatilloPorId(menu, totalPlatillos, idPlatillo);
     if (idxMenu == -1) {
-        printf("\nError: [ El platillo no existe en el menu. ]\n")
+        printf("\nError: [ El platillo no existe en el menu. ]\n");
         return 0;
     }
 
@@ -62,7 +62,7 @@ int agregarPlatillo(Comanda *comanda, const Platillo menu[], int totalPlatillos,
 
     int nuevoIdx = comanda->totalRenglones;
     comanda->items[nuevoIdx].idPlatillo = menu[idxMenu].id;
-    strncpy(comanda->items[nuevoIdx].nombrePlatillo, menu[idxMenu].nombre, MAX_NOMBRE_PLATILLO - 1);
+    copiarCadena(comanda->items[nuevoIdx].nombrePlatillo, menu[idxMenu].nombre, MAX_NOMBRE_PLATILLO - 1);
     comanda->items[nuevoIdx].nombrePlatillo[MAX_NOMBRE_PLATILLO - 1] = '\0';
     comanda->items[nuevoIdx].precioUnitario = menu[idxMenu].precio;
     comanda->items[nuevoIdx].cantidad = cantidad;

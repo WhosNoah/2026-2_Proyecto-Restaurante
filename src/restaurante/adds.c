@@ -24,7 +24,7 @@ void leerCadena(const char *prompt, char *destino, int tamMax) {
     }
 }
 
- int leer_entero(const char *prompt) {
+ int leerEntero(const char *prompt) {
     char buffer[64];
 
     while (1) {
@@ -70,7 +70,7 @@ void leerCadena(const char *prompt, char *destino, int tamMax) {
     }
 }
 
-double leer_double(const char *prompt) {
+double leerDouble(const char *prompt) {
     char buffer[64];
 
     while (1) {
@@ -124,4 +124,20 @@ double leer_double(const char *prompt) {
 
         printf("  Numero decimal invalido. Intenta de nuevo.\n");
     }
+}
+
+void copiarCadena(char *destino, const char *origen, int tam_max) {
+    if (destino == NULL || tam_max <= 0) {
+        return;
+    }
+    if (origen == NULL) {
+        destino[0] = '\0';
+        return;
+    }
+    int i = 0;
+    while (i < tam_max - 1 && origen[i] != '\0') {
+        destino[i] = origen[i];
+        i++;
+    }
+    destino[i] = '\0';
 }

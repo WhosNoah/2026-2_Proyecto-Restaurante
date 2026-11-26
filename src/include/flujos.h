@@ -6,6 +6,7 @@
 #include <mesa.h>
 #include <stdio.h>
 #include <cuenta.h>
+#include <pedirpropina.h>
 
 void flujoAbrirMesa(Mesa mesas[], int totalMesas);
 void flujoAgregarPlatillo(Mesa mesas[], int totalMesas, const Platillo menu[], int totalPlatillos);
