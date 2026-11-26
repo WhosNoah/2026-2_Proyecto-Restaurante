@@ -1,10 +1,7 @@
 #ifndef CUENTA_H
 #define CUENTA_H
 
-#include <math.h>
 #include <mesa.h>
-#include <stdio.h>
-#include <cuenta.h>
 
 typedef struct {
     double total_con_iva;

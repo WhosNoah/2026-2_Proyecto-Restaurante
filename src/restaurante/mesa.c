@@ -1,6 +1,8 @@
 #include <mesa.h>
+#include <stdio.h>
+#include <string.h>
 
-void inicializar_mesas(Mesa mesas[], int *total_mesas) {
+void inicializar_mesa(Mesa mesas[], int *total_mesas) {
     *total_mesas = 0;
     for ( int i = 0; i < MAX_MESAS; i++ ) {
         mesas[i].numero = 0;
@@ -15,7 +17,7 @@ void inicializar_mesas(Mesa mesas[], int *total_mesas) {
 int registrar_mesa(Mesa mesas[], int *total_mesas, int numero, int capacidad) {
     if ( *total_mesas >= MAX_MESAS || numero <= 0 || capacidad <= 0 )
         return 0;
-    if ( buscar_mesa_por_numero(mesas, *total_mesas, numero) != -1 ) {
+    if ( buscar_mesa_por_numero(mesas, total_mesas, numero) != -1 ) {
         printf("\nError: [ Numero de mesa duplicado. ]\n");
         return 0;
     }
@@ -26,7 +28,7 @@ int registrar_mesa(Mesa mesas[], int *total_mesas, int numero, int capacidad) {
     mesas[idx].estado = MESA_LIBRE;
     mesas[idx].mesero[0] = '\0';
     mesas[idx].comensales = 0;
-    inicializar_comanda(&mesas[idx].comanda);
+    inicializar_comanda(&comanda[idx].comanda);
 
     (*total_mesas)++;
     return 1;
@@ -40,7 +42,7 @@ int buscar_mesa_por_numero(const Mesa mesas[], int total_mesas, int numero) {
     return -1;
 }
 
-void inicializar_ventas_meseross(VentaMesero ventas_meseros[], int *total_meseros) {
+void inicializar_ventas_meseros(VentaMesero ventas_meseros[], int *total_meseros) {
     *total_meseros = 0;
     for ( int i = 0; i < MAX_MESEROS; i++ ) {
         ventas_meseros[i].nombre[0] = '\0';
@@ -50,7 +52,7 @@ void inicializar_ventas_meseross(VentaMesero ventas_meseros[], int *total_mesero
 }
 
 int asegurar_mesero(VentaMesero ventas_meseros[], int *total_meseros, const char *nombre_mesero) {
-    if ( nombre_mesero == NULL || nombre_mesero[0] == '\0' )
+    if ( nombre_mesero == NULL || nombre_mesero[0]= '\0' )
         return -1;
     for ( int i = 0; i < *total_meseros; i++ ) {
         if ( strcmp(ventas_meseros[i].nombre, nombre_mesero) == 0 )
@@ -76,15 +78,15 @@ int abrir_mesa(Mesa mesas[], int total_mesas, int numero_mesa, const char *nombr
         printf("\nError: [ Mesa inexistente. ]\n");
         return 0;
     }
-    if ( mesas[idx].estado == MESA_ABIERTA ) {
-        printf("\nMesa abierta!\n");
+    if ( mesas[idx].estado == MESA_ABIERTA ) [
+        printf("\nError: [ Mesa ya abierta. ]\n");
         return 0;
-    }
+    ]
     if ( nombre_mesero == NULL || nombre_mesero[0] == '\0' ) {
-        printf("\nFalta el nombre del mesero.\n");
+        printf("\nError: [ Falta nombre de mesero. ]\n");
         return 0;
     }
-    if ( comensales <= 0 || comensales > mesas[idx].capacidad ) {
+    if ( comensales <= 0 || comensales > mesas[idx].capacidada ) {
         printf("\nError: [ Comensales invalidos / Exceden capacidad. ]\n");
         return 0;
     }
@@ -98,7 +100,7 @@ int abrir_mesa(Mesa mesas[], int total_mesas, int numero_mesa, const char *nombr
     return 1;
 }
 
-int cerrar_mesa(Mesa mesas[], int total_mesas, int numero_mesa, Platillo menu[], int total_platillos, VentaMesero ventas_meseros[], int *total_meseros, double *total_cobrado) {
+int cerrar_mesa(Mesa mesas[], int total_mesas, VentaMesero ventas_meseros[], int *total_meseros, double *total_cobrado) {
     int idx = buscar_mesa_por_numero(mesas, total_mesas, numero_mesa);
     if ( idx == -1 || mesas[idx].estado == MESA_LIBRE )
         return 0;
@@ -111,20 +113,21 @@ int cerrar_mesa(Mesa mesas[], int total_mesas, int numero_mesa, Platillo menu[],
         const RenglonComanda *r = &mesas[idx].comanda.items[i];
         int idx_menu = buscar_platillo_id(menu, total_platillos, r->id_platillo);
         if ( idx_menu != -1 )
-            menu[idx].unidades_vendidas += r->cantidad;
+            menu[idx_menu].unidades_vendidas += r->cantidad;
     }
 
     int idx_mesero = asegurar_mesero(ventas_meseros, total_meseros, mesas[idx].mesero);
     if ( idx_mesero != -1 ) {
-        ventas_meseros[idx].total_vendido += monto;
-        ventas_meseros[idx].mesas_atendidas++;
+        ventas_meseros[idx_mesero].total_vendido += monto;
+        ventas_meseros[idx_mesero].mesas_atendidas++;
     }
 
-    // Liberar la mesa y limpiar la comanda.
     inicializar_comanda(&mesas[idx].comanda);
     mesas[idx].mesero[0] = '\0';
     mesas[idx].comensales = 0;
     mesas[idx].estado = MESA_LIBRE;
+
+    return -1;
 }
 
 void mostrar_mapa_mesas(const Mesa mesas[], int total_mesas) {
@@ -142,15 +145,15 @@ void mostrar_mapa_mesas(const Mesa mesas[], int total_mesas) {
     printf("=======================================================\n");
 }
 
-void mostrar_reporte_ventas(const VentaMesero ventas_meseros[], int total_meseros, const Platillo menu[], int total_platillos) {
+void mostrar_reporte_ventas(const VentaMesero mostrar_reporte_ventas[], int total_meseros, const Platillo menu[], int total_platillos) {
     printf("\n================ REPORTE DE VENTAS (CIERRES) ================\n");
 
     printf("\n--- Ventas por Mesero ---\n");
-    if ( total_meseros == 0 ) {
-        printf("  Sin ventas registradas... Aun.\n");
-    } else {
-        for ( int i = 0; i < total_meseros; i++ ) 
-            printf("  %-18s | Mesas: %2d | Total: $%8.2f.\n", ventas_meseros[i].nombre, ventas_meseros[i].mesas_atendidas, ventas_meseros[i].total_vendido);
+    if ( total_meseros == 0 )
+        printf("  Sin ventas registradas.\n");
+    else {
+        for ( int i = 0; i < total_meseros; i++ )
+            printf("  %-18s | Mesas: %2d | Total: $%8.2f\n", ventas_meseros[i].nombre, ventas_meseros[i].mesas_atendidas, ventas_meseros[i].total_vendido);
     }
 
     printf("\n--- Unidades Vendidas por Platillo ---\n");
@@ -158,10 +161,10 @@ void mostrar_reporte_ventas(const VentaMesero ventas_meseros[], int total_mesero
     for ( int i = 0; i < total_platillos; i++ ) {
         if ( menu[i].unidades_vendidas > 0 ) {
             hay_vendidos = 1;
-            printf("  [%2d] %-30s | %3d uds | %8.2f\n", menu[i].id, menu[i].nombre, menu[i].unidades_vendidas, menu[i].unidades_vendidas * menu[i].precio);
+            printf("  [%2d] %-30s | %3d uds | $%8.2f\n", menu[i].id, menu[i].nombre, menu[i].unidades_vendidas, menu[i].unidades_vendidas * menu[i].precio);
         }
     }
     if ( !hay_vendidos )
-        printf("  Aun no se han cerrado las mesas con platillos.\n");
+        printf("  Aun no se han cerrado mesas con platillos.\n");
     printf("=============================================================\n");
 }

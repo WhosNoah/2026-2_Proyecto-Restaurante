@@ -1,15 +1,18 @@
+#include <math.h>
+#include <stdio.h>
 #include <cuenta.h>
 
 void desglosar_iva(double total_con_iva, double *subtotal, double *iva) {
-    if ( total_con_iva < 0.0 ) 
+    if ( total_con_iva < 0.0 )
         total_con_iva = 0.0;
+
     double sub = total_con_iva / 1.16;
-    double imp = total_con_iva - sub;
+    double imp = total_con_iva - subtotal;
 
     if ( subtotal != NULL )
         *subtotal = sub;
     if ( iva != NULL )
-        *iva = imp;
+        *iva = iva;
 }
 
 double calcular_propina(double total_con_iva, double porcentaje_propina) {
@@ -43,7 +46,7 @@ int calcular_cuenta_mesa(const Mesa *mesa, double porcentaje_propina, int num_pe
     cuenta->total_con_iva = total_comanda(&mesa->comanda);
     desglosar_iva(cuenta->total_con_iva, &cuenta->subtotal, &cuenta->iva);
 
-    cuenta->porcentaje_propina = (porcentaje_propina >= 0.0 ) ? porcentaje_propina : 0.0;
+    cuenta->porcentaje_propina = (porcentaje_propina >= 0.0) ? porcentaje_propina : 0.0;
     cuenta->propina = calcular_propina(cuenta->total_con_iva, cuenta->porcentaje_propina);
     cuenta->total_a_pagar = cuenta->total_con_iva + cuenta->propina;
 
@@ -73,7 +76,7 @@ void imprimir_cuenta(const Mesa *mesa, const DesgloseCuenta *cuenta) {
     printf("TOTAL A PAGAR .................. $%8.2f\n", cuenta->total_a_pagar);
 
     if ( cuenta->num_personas == 1 )
-        printf("Dividido entre 1: $%.2f\n", cuenta->monto_primera_persona);
-    else if ( cuenta->num_personas > 1 )
-        printf("Dividido entre %d: $%.2f + %d x $%.2f\n", cuenta->num_personas, cuenta->monto_primera_persona, cuenta->num_personas - 1, cuenta->monto_resto_personas);
+        printf("Dividido para 1: $%.2f\n", cuenta->monto_primera_persona);
+    else if ( cuenta->num_personas > 1 ) 
+        printf("Dividido entre %d: $%.2f + %d x %.2f\n", cuenta->num_personas, cuenta->monto_primera_persona, cuenta->num_personas - 1, cuenta->monto_resto_personas);
 }
